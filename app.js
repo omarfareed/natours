@@ -18,7 +18,7 @@ const express = require('express'),
   cookieParser = require('cookie-parser'),
   globalErrorHandler = require('./controllers/errorController');
 // 1] Middlewares
-//
+// added new line
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'view'));
 app.use(express.static(path.join(__dirname, 'public')));
