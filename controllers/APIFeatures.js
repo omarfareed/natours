@@ -31,12 +31,7 @@ class APIFeatures {
       limit = +this.queryStr.limit || 100,
       skip = (page - 1) * limit;
 
-    // if (req.query.page) {
-    //   const numTours = await Tour.countDocuments();
-    //   if (skip >= numTours) throw new Error("page doesn't exits");
-    // }
 
-    // console.log(`${page} ===> ${limit}`);
     this.query = this.query.skip(skip).limit(limit);
     return this;
   }

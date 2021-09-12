@@ -8,6 +8,7 @@ const express = require('express'),
   hpp = require('hpp'),
   Tour = require('./models/tourModel'),
   // tourController = require('./controllers/tours-controller'),
+  compression = require('compression'),
   userRouter = require('./routers/users-routers'),
   tourRouter = require('./routers/tours-routers'),
   reviewRouter = require('./routers/reviews-routers'),
@@ -51,6 +52,7 @@ app.use(
     ]
   })
 );
+app.use(compression());
 if (process.env.MODE_ENV === 'development') app.use(morgan('dev'));
 // app.param('id', tourController.checkID);
 app.use('/', viewsRouter);

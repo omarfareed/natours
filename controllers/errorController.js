@@ -1,6 +1,5 @@
 const AppError = require('./../utils/appError');
 const handleCastErrorDB = err => {
-  // console.log();
   return new AppError(`Invalid ${err.path}: ${err.value}`, 400);
 };
 const handleJWTError = () =>
@@ -15,11 +14,9 @@ const handleDuplicateErrorDB = err => {
 };
 const handleValidationError = err => {
   const errors = Object.values(err.errors).map(er => er.message);
-  // console.log(errors);
   return new AppError(errors, err.statusCode);
 };
 const sendErrorForDev = (err, req, res) => {
-  // console.log('here');
   if (req.originalUrl.startsWith('/api'))
     return res.status(err.statusCode).json({
       status: err.status,
@@ -45,8 +42,6 @@ const sendErrorProduction = (err, req, res) => {
       });
 
     //For developers
-    // console.log(err);
-    // console.error(`ERROR : `, err);
     return res.status(500).json({
       status: 'error',
       message: 'something went wrong'
@@ -62,8 +57,6 @@ const sendErrorProduction = (err, req, res) => {
       });
 
   //For developers
-  // console.log(err);
-  // console.error(`ERROR : `, err);
   return res
     .status(500)
     .set('Content-Security-Policy', '*')
@@ -76,18 +69,7 @@ module.exports = (err, req, res, next) => {
   err.statusCode = err.statusCode || 505;
   err.status = err.status || 'error';
   if (process.env.NODE_ENV === 'production') {
-    // spread operator doesn't copy all properties
-    // at this line of code error variable doesn't contain the name property which
-    // FIXME:
-    // let error = { ...err };
-    // let error = Object.assign({} , err);
-    // properties
-    // FIXED:
-    // (https://stackoverflow.com/questions/52787593/why-doesnt-destructuring-messageevent-via-the-spread-operator-return-all-proper)
-    // return res.json(err);
     let error = err;
-    // JSON.parse(JSON.stringify(err));
-    // return res.json({error , err});
     if (error.name === 'CastError') error = handleCastErrorDB(error);
     else if (error.code === 11000) error = handleDuplicateErrorDB(error);
     else if (error.name === 'ValidationError')
@@ -98,6 +80,5 @@ module.exports = (err, req, res, next) => {
     sendErrorProduction(error, req, res);
   } else if (process.env.NODE_ENV === 'development') {
     sendErrorForDev(err, req, res);
-    console.log(err);
   }
 };

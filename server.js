@@ -28,7 +28,6 @@ const server = app.listen(port, () => {
   console.log('listening on port ' + port);
 });
 
-// console.log(x);
 // NOTE: this function handles only errors occur in asynchronous code
 process.on('unhandledRejection', function(err) {
   console.log(err.name, err.message);
